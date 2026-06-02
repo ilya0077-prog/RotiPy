@@ -24,7 +24,7 @@ class RotiPy:
     def parse_alphafold_data(self):
 
         # alphafold 3D data will be passed into biopython to make a hiearchy
-        # Convert pdb file from alpha fold into biopython hierachies utilizing MMCIFParser
+        # Convert pdb file from alpha fold into biopython hierachies utilizing MMCIFParser OR PDBParser
 
         cif_parser=MMCIFParser(QUIET=True)
 
@@ -57,11 +57,9 @@ class RotiPy:
     def calculate_biopython_residues(self):
 
         # biopython hiearchy will be passed into numpy to convert it into vector coordinates utilizing the Biopython getneighbor function.
-        # this will also analyze the eucladian distances between rotifer and prion
+        # will print out residues!
 
-        #Maximum distance for neighbor
         chains=list(set([atom.get_parent().get_parent().id for atom in self.atom_list_mdock]))
-        print(f'{chains}')
 
         atoms_peptide=[atom for atom in self.atom_list_mdock if atom.get_parent().get_parent().id == ' ']
         atoms_target=[atom for atom in self.atom_list_mdock if atom.get_parent().get_parent().id != ' ']
