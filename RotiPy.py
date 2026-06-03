@@ -17,9 +17,6 @@ class RotiPy:
         self.protein_B=protein_B
         self.protein_C=protein_C
         self.LIMIT=LIMIT
-
-    def __str__(self):
-        return f'Analyzing {self.peptide_A} Against Prion Targets...'
     
     def parse_alphafold_data(self):
 
@@ -29,17 +26,17 @@ class RotiPy:
         cif_parser=MMCIFParser(QUIET=True)
 
         structure_A=cif_parser.get_structure('peptide_A',
-        'rotifer_data/experimental_group/rotifer_sco_spondin_derived_hexapeptide/fold_rotifer_hexapeptide_model_0.cif')
+        self.peptide_A)
         structure_B=cif_parser.get_structure('peptide_B',
-        'rotifer_data/control_group/rotifer_poly_alanine_homopolymer/fold_rotifer_hexapeptide_control_0_model_0.cif')
+        self.peptide_B)
         structure_C=cif_parser.get_structure('peptide_C',
-        'rotifer_data/control_group/rotifer_scrambled_hexapeptide/rotifer_scrambled_hexapeptide_model_0.cif')
+        self.peptide_C)
         structure_7LNA=cif_parser.get_structure('7LNA',
-        'prion_data/experimental_group_prion_fibril/7LNA.cif')
+        self.protein_A)
         structure_7UMQ=cif_parser.get_structure('7UMQ',
-        'prion_data/experimental_group_prion_fibril/7UMQ.cif')
+        self.protein_B)
         structure_1QLX=cif_parser.get_structure('1QLX',
-                                            'prion_data/control_group_human_prion_protein/1QLX.cif')
+        self.protein_C)
 
         self.atom_list_peptide_A=list(structure_A.get_atoms())
         self.atom_list_peptide_B=list(structure_B.get_atoms())
