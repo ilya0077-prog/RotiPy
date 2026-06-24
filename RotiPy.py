@@ -5,23 +5,18 @@ class RotiPy:
     def __init__(self, 
                  peptide_A='rotifer_data/experimental_group/rotifer_sco_spondin_derived_hexapeptide/fold_rotifer_hexapeptide_model_0.cif', 
                  peptide_B='rotifer_data/control_group/rotifer_poly_alanine_homopolymer/fold_rotifer_hexapeptide_control_0_model_0.cif', 
-                 peptide_C='rotifer_data/control_group/rotifer_scrambled_hexapeptide/rotifer_scrambled_hexapeptide_model_0.cif', 
-                 protein_A='prion_data/experimental_group_prion_fibril/7LNA.cif', 
+                 peptide_C='rotifer_data/control_group/rotifer_scrambled_hexapeptide_SSDLDN/fold_2026_06_04_22_47_model_0.cif', 
                  protein_B='prion_data/experimental_group_prion_fibril/7UMQ.cif', 
                  protein_C='prion_data/control_group_human_prion_protein/1QLX.cif', 
                  LIMIT=6):
         self.peptide_A=peptide_A
         self.peptide_B=peptide_B
         self.peptide_C=peptide_C
-        self.protein_A=protein_A
         self.protein_B=protein_B
         self.protein_C=protein_C
         self.LIMIT=LIMIT
     
     def parse_alphafold_data(self):
-
-        # alphafold 3D data will be passed into biopython to make a hiearchy
-        # Convert pdb file from alpha fold into biopython hierachies utilizing MMCIFParser OR PDBParser
 
         cif_parser=MMCIFParser(QUIET=True)
 
@@ -31,8 +26,6 @@ class RotiPy:
         self.peptide_B)
         structure_C=cif_parser.get_structure('peptide_C',
         self.peptide_C)
-        structure_7LNA=cif_parser.get_structure('7LNA',
-        self.protein_A)
         structure_7UMQ=cif_parser.get_structure('7UMQ',
         self.protein_B)
         structure_1QLX=cif_parser.get_structure('1QLX',
@@ -41,7 +34,6 @@ class RotiPy:
         self.atom_list_peptide_A=list(structure_A.get_atoms())
         self.atom_list_peptide_B=list(structure_B.get_atoms())
         self.atom_list_peptide_C=list(structure_C.get_atoms())
-        self.atom_list_7LNA=list(structure_7LNA.get_atoms())
         self.atom_list_7UMQ=list(structure_7UMQ.get_atoms())
         self.atom_list_1QLX=list(structure_1QLX.get_atoms())
 
@@ -52,9 +44,6 @@ class RotiPy:
         self.atom_list_mdock=list(mdockpep_res.get_atoms())
 
     def calculate_biopython_residues(self):
-
-        # biopython hiearchy will be passed into numpy to convert it into vector coordinates utilizing the Biopython getneighbor function.
-        # will print out residues!
 
         chains=list(set([atom.get_parent().get_parent().id for atom in self.atom_list_mdock]))
 
@@ -87,7 +76,7 @@ class RotiPy:
         peptide_res_num=list(set([atom.get_parent().get_id()[1] for atom in self.search_peptide]))
         protein_res_num=list(set([atom.get_parent().get_id()[1] for atom in self.search_target]))
 
-        print(f'peptide binding pocket residues -> {peptide_res_num}, prion (7UMQ) binding pocket residues -> {protein_res_num}')
+        print(f'peptide binding pocket residues -> {peptide_res_num}, target binding pocket residues -> {protein_res_num}')
 
     @property
     def LIMIT(self):
